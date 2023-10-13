@@ -1,6 +1,7 @@
 "use strict";
+require('dotenv').config();
 const mongoose = require("mongoose");
-const URI = "mongodb://bramirez:bramirez%4006~@170.187.155.55:27017/?retryWrites=true&w=majority";
+const URI = process.env.MONGOURI;
 let dbStatus;
 
 main()
