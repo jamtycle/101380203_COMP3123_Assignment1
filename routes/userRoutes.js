@@ -7,10 +7,15 @@ const userRoute = express.Router();
 
 userRoute.post("/signup", async (req, res) => {
     try {
+        const ps = Buffer.from(req.body.password).toString("base64");
+        req.body.password = ps;
+
         const user = new UserModel(req.body);
         const user_result = await user.save();
-        console.log("User inserted: ", user_result);
-        return res.status(201).send(user_result);
+        return res.status(201).send({
+            username: user_result.username,
+            email: user_result.email
+        });
     } catch (ex) {
         if (ex.constructor.name === "MongoServerError") {
             return res.status(500).send({ status: false, error: { message: ex.toString(), obj: ex } });
@@ -23,7 +28,7 @@ userRoute.post("/signup", async (req, res) => {
 
 userRoute.post("/login", async (req, res) => {
     try {
-        const user = await loginUser(req.body.username, req.body.password)
+        const user = await loginUser(req.body.username, Buffer.from(req.body.password).toString("base64"))
 
         if (!user) return res.status(200).send({
             status: false,

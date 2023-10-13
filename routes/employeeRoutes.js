@@ -9,7 +9,7 @@ const empRoute = express.Router();
 empRoute.use(async (req, res, next) => {
     const auth = req.header("Authorization");
     if (!auth) return res.status(403).send({ status: false, error: "Forbidden" });
-            
+
     const { payload } = await verifyToken(auth.replace("Bearer ", ""));
     const user = findUserById(payload._id);
     if (!user) return res.status(403).send({ status: false, error: "Forbidden" });
@@ -34,15 +34,19 @@ empRoute.post("/", async (req, res) => {
     try {
         const employee = new EmployeeModel(req.body);
         const result = await employee.save();
-        console.log("Employee created: ", result);
+        // console.log("Employee created: ", result);
         return res.status(201).send(result);
     } catch (ex) {
+        console.log(ex.constructor.name);
         if (ex.constructor.name === "MongoServerError") {
+            return res.status(500).send({ status: false, error: { message: ex.toString(), obj: ex } });
+        } else if (ex.constructor.name === "ValidationError") {
             return res.status(500).send({ status: false, error: { message: ex.toString(), obj: ex } });
         }
 
         console.error(ex);
         return res.status(500).send({ status: false, error: "Internal server error." });
+        throw ex;
     }
 });
 
@@ -62,10 +66,24 @@ empRoute.get("/:ied", async (req, res) => {
 
 empRoute.put("/:ied", async (req, res) => {
     try {
-        const status = await EmployeeModel.updateOne({ _id: req.params.ied }, { $set: req.body });
+        const ndata = new EmployeeModel(req.body);
+        const val = ndata.validateSync();
+        if (!!val) throw val;
+
+        const status = await EmployeeModel.updateOne({ _id: req.params.ied }, {
+            $set: {
+                first_name: ndata.first_name,
+                last_name: ndata.last_name,
+                email: ndata.email,
+                gender: ndata.gender,
+                salary: ndata.salary,
+            }
+        });
         return res.status(200).send(status);
     } catch (ex) {
         if (ex.constructor.name === "MongoServerError") {
+            return res.status(500).send({ status: false, error: { message: ex.toString(), obj: ex } });
+        } else if (ex.constructor.name === "ValidationError") {
             return res.status(500).send({ status: false, error: { message: ex.toString(), obj: ex } });
         }
 
