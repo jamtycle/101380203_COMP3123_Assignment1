@@ -1,4 +1,8 @@
 "use strict";
+const { existsSync } = require("fs");
+if (!existsSync("./.env")) console.log("NO ENVIRONMENT FOUND!");
+require("dotenv").config();
+
 const { getDBStatus } = require("./model/db");
 const express = require('express');
 
