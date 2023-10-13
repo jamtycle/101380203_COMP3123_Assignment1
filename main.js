@@ -22,9 +22,19 @@ app.use((req, res, next) => {
     console.error(dbs.message);
     return res.status(500).send({ status: false, error: "Internal database error." });
 });
+app.use(function (req, res, next) {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type, Authorization');
+    next();
+});
 app.use(`${APIPATH}/user`, userRoute);
 app.use(`${APIPATH}/employee`, empRoute);
 
 app.get('/', (req, res) => res.send('Hello World!'));
 
+app.use((err, req, res, next) => {
+    console.error(err);
+    return res.status(500).send({ status: false, error: err.toString() });
+});
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
