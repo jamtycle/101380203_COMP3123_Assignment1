@@ -27,7 +27,7 @@ userRoute.post("/login", async (req, res) => {
 
         if (!user) return res.status(200).send({
             status: false,
-            username: unameobj.username ?? unameobj.email,
+            username: req.body.username,
             message: "User not found"
         });
 
@@ -39,7 +39,7 @@ userRoute.post("/login", async (req, res) => {
         const token = await getToken(user);
         return res.status(200).send({
             status: true,
-            username: unameobj.username ?? unameobj.email,
+            username: req.body.username,
             message: "User logged in successfully",
             jwt_token: token.toString()
         });
