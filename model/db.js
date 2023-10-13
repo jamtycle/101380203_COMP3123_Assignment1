@@ -4,20 +4,23 @@ const mongoose = require("mongoose");
 const URI = process.env.MONGOURI;
 let dbStatus;
 
-main()
-    .then(() => {
-        console.log("Database connected successfully!");
-        dbStatus = { status: "connected" };
-    })
-    .catch(err => {
-        console.log(err);
-        dbStatus = { status: "error", message: err };
-    });
+// connectDB()
+//     .then(() => {
+//         // console.log("Database connected successfully!");
+//         dbStatus = {};
+//     })
+//     .catch(err => {
+//         console.log(err);
+//         dbStatus = { message: err };
+//     });
 
-async function main() {
-    await mongoose.connect(URI, { dbName: "full-stack" });
+async function connectDB() {
+    const status = mongoose.connection.readyState;
+    // console.log(status);
+    // if (![1, 2].includes(status)) await mongoose.connect(URI, { dbName: "full-stack" });
+    if (status !== 1) await mongoose.connect(URI, { dbName: "full-stack" });
 }
 
-const getDBStatus = () => dbStatus;
+const getDBStatus = () => mongoose.STATES[mongoose.connection.readyState];
 
-module.exports = getDBStatus;
+module.exports = { getDBStatus, connectDB };

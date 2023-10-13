@@ -37,7 +37,6 @@ empRoute.post("/", async (req, res) => {
         // console.log("Employee created: ", result);
         return res.status(201).send(result);
     } catch (ex) {
-        console.log(ex.constructor.name);
         if (ex.constructor.name === "MongoServerError") {
             return res.status(500).send({ status: false, error: { message: ex.toString(), obj: ex } });
         } else if (ex.constructor.name === "ValidationError") {
@@ -66,17 +65,18 @@ empRoute.get("/:ied", async (req, res) => {
 
 empRoute.put("/:ied", async (req, res) => {
     try {
+        // TODO: do not require the whole object to update.
         const ndata = new EmployeeModel(req.body);
         const val = ndata.validateSync();
         if (!!val) throw val;
 
         const status = await EmployeeModel.updateOne({ _id: req.params.ied }, {
             $set: {
-                first_name: ndata.first_name,
-                last_name: ndata.last_name,
-                email: ndata.email,
-                gender: ndata.gender,
-                salary: ndata.salary,
+                ...(!ndata.first_name ? {} : { first_name: ndata.first_name }),
+                ...(!ndata.last_name ? {} : { last_name: ndata.last_name }),
+                ...(!ndata.email ? {} : { email: ndata.email }),
+                ...(!ndata.gender ? {} : { gender: ndata.gender }),
+                ...(!ndata.salary ? {} : { salary: ndata.salary }),
             }
         });
         return res.status(200).send(status);
