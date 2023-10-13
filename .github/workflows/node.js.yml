@@ -21,14 +21,13 @@ jobs:
 
     steps:
     - name: Make envfile
-      uses: SpicyPizza/create-envfile@v2.0
-      with:
-        JWT_ISSUER: gbc:brunoramirez:101380203
-        JWT_AUDIENCE: gbc:people
-        JWT_EXPIRE: 60 days
-        JWT_KEY: ${{ secrets.JWT_KEY }}
-        JWT_CLAIM: gbc:brunoramirez:claim
-        MONGOURI: ${{ secrets.MONGOURI }}
+      run:
+        echo "JWT_ISSUER=gbc:brunoramirez:101380203" >> .env
+        echo "JWT_AUDIENCE=gbc:people" >> .env
+        echo "JWT_EXPIRE=60 days" >> .env
+        echo "JWT_KEY=${{ secrets.JWT_KEY }}" >> .env
+        echo "JWT_CLAIM=gbc:brunoramirez:claim" >> .env
+        echo "MONGOURI=${{ secrets.MONGOURI }}" >> .env
     - uses: actions/checkout@v3
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
