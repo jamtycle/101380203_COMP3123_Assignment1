@@ -5,13 +5,12 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
@@ -20,19 +19,22 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-    - name: Make envfile
-      run:
-        echo "JWT_ISSUER=gbc:brunoramirez:101380203" >> .env
-        echo "JWT_AUDIENCE=gbc:people" >> .env
-        echo "JWT_EXPIRE=60 days" >> .env
-        echo "JWT_KEY=${{ secrets.JWT_KEY }}" >> .env
-        echo "JWT_CLAIM=gbc:brunoramirez:claim" >> .env
-        echo "MONGOURI=${{ secrets.MONGOURI }}" >> .env
-    - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - run: npm ci
-    - run: npm test
+      - uses: actions/checkout@v3
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+
+      - run: npm ci
+
+      - name: Make envfile
+        run: echo "JWT_ISSUER=gbc:brunoramirez:101380203" >> .env
+          echo "JWT_AUDIENCE=gbc:people" >> .env
+          echo "JWT_EXPIRE=60 days" >> .env
+          echo "JWT_KEY=${{ secrets.JWT_KEY }}" >> .env
+          echo "JWT_CLAIM=gbc:brunoramirez:claim" >> .env
+          echo "MONGOURI=${{ secrets.MONGOURI }}" >> .env
+
+      - run: npm test
