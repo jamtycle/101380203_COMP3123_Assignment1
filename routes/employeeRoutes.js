@@ -1,8 +1,21 @@
 "use strict";
 const express = require('express');
 const EmployeeModel = require("../model/employeeModel");
+const { findUserById } = require("../model/userModel");
+const { verifyToken } = require("../auth/tokenGenerator");
 
 const empRoute = express.Router();
+
+empRoute.use(async (req, res, next) => {
+    const auth = req.header("Authorization");
+    if (!auth) return res.status(403).send({ status: false, error: "Forbidden" });
+            
+    const { payload } = await verifyToken(auth.replace("Bearer ", ""));
+    const user = findUserById(payload._id);
+    if (!user) return res.status(403).send({ status: false, error: "Forbidden" });
+
+    return next();
+});
 
 empRoute.get("/", async (req, res) => {
     try {

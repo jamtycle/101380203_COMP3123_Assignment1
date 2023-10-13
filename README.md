@@ -19,7 +19,7 @@ Run this project for the first time with:
 npm i && npm start
 ```
 
-You can only run this after `npm i`: 
+You can only run this after `npm i`:
 
 ```bash
 npm start
@@ -36,7 +36,6 @@ npm start
 | 5       | GET    | /api/v1/emp/employees/{eid}   | 200             | User			can get employee details by employee id |
 | 6       | PUT    | /api/v1/emp/employees/{eid}   | 200             | User			can update employee details             |
 | 7       | DELETE | /api/v1/emp/employees?eid=xxx | ­204           | User			can delete employee by employee id      |
-
 
 ## Database specification
 
