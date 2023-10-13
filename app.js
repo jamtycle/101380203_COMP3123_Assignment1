@@ -1,7 +1,9 @@
 "use strict";
 const { existsSync } = require("fs");
 if (!existsSync("./.env")) console.log("NO ENVIRONMENT FOUND!");
+else console.log("READING ENVIRONMENT FILE!")
 require("dotenv").config();
+if (!process.env.JWT_KEY) console.log("NO JWT KET CONFIGURED!");
 
 const { getDBStatus } = require("./model/db");
 const express = require('express');
