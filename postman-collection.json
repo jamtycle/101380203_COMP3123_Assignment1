@@ -131,7 +131,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{URL}}/api/v1/employee/6528956494a6eb5294550f46",
+							"raw": "{{URL}}/api/v1/employee/6528d8af2c0a7b94f7115835",
 							"host": [
 								"{{URL}}"
 							],
@@ -139,7 +139,7 @@
 								"api",
 								"v1",
 								"employee",
-								"6528956494a6eb5294550f46"
+								"6528d8af2c0a7b94f7115835"
 							]
 						},
 						"description": "Returns one Employee from `employee`"
@@ -153,7 +153,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"first_name\": \"Bruno\",\n    \"last_name\": \"Ramirez\",\n    \"email\": \"bramirez206@hotmail.com\",\n    \"gender\": \"Male\",\n    \"salary\": 15.55\n}",
+							"raw": "{\n    \"first_name\": \"test\",\n    \"last_name\": \".\",\n    \"email\": \"bramirez206@hotmail.com\",\n    \"gender\": \"Male\",\n    \"salary\": 15.55\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -161,7 +161,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{URL}}/api/v1/employee/6528956494a6eb5294550f46",
+							"raw": "{{URL}}/api/v1/employee/6528d8af2c0a7b94f7115835",
 							"host": [
 								"{{URL}}"
 							],
@@ -169,7 +169,7 @@
 								"api",
 								"v1",
 								"employee",
-								"6528956494a6eb5294550f46"
+								"6528d8af2c0a7b94f7115835"
 							]
 						},
 						"description": "Updates a document in the `employee` collection"
@@ -260,6 +260,11 @@
 		{
 			"key": "URL",
 			"value": "localhost:3000",
+			"type": "string"
+		},
+		{
+			"key": "PROD_URL",
+			"value": "http://170.187.155.55:3005",
 			"type": "string"
 		}
 	]
