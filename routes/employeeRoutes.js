@@ -1,5 +1,5 @@
 "use strict";
-const express = require('express');
+const express = require("express");
 const EmployeeModel = require("../model/employeeModel");
 const { findUserById } = require("../model/userModel");
 const { verifyToken } = require("../auth/tokenGenerator");
@@ -45,7 +45,6 @@ empRoute.post("/", async (req, res) => {
 
         console.error(ex);
         return res.status(500).send({ status: false, error: "Internal server error." });
-        throw ex;
     }
 });
 
@@ -68,7 +67,7 @@ empRoute.put("/:ied", async (req, res) => {
         // TODO: do not require the whole object to update.
         const ndata = new EmployeeModel(req.body);
         const val = ndata.validateSync();
-        if (!!val) throw val;
+        if (val) throw val;
 
         const status = await EmployeeModel.updateOne({ _id: req.params.ied }, {
             $set: {

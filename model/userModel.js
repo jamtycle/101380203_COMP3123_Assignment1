@@ -10,13 +10,13 @@ const UserModel = mongoose.model("user", userSchema);
 
 const findUserById = async (_uid) => {
     return await UserModel.findOne({ _id: _uid });
-}
+};
 
 const loginUser = async (_username, _password) => {
     return await UserModel.findOne({
         ...(_username.includes("@") ? { email: _username } : { username: _username }),
         password: _password
     });
-}
+};
 
 module.exports = { UserModel, findUserById, loginUser };

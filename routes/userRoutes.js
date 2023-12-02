@@ -1,5 +1,5 @@
 "use strict";
-const express = require('express');
+const express = require("express");
 const { UserModel, loginUser } = require("../model/userModel");
 const { getToken } = require("../auth/tokenGenerator");
 
@@ -28,7 +28,7 @@ userRoute.post("/signup", async (req, res) => {
 
 userRoute.post("/login", async (req, res) => {
     try {
-        const user = await loginUser(req.body.username, Buffer.from(req.body.password).toString("base64"))
+        const user = await loginUser(req.body.username, Buffer.from(req.body.password).toString("base64"));
 
         if (!user) return res.status(200).send({
             status: false,
